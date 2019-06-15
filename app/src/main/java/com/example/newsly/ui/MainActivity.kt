@@ -1,10 +1,11 @@
-package com.example.newsly
+package com.example.newsly.ui
 
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.newsly.BuildConfig
+import com.example.newsly.R
 import com.example.newsly.adapter.TopStoriesAdapter
 import com.example.newsly.model.results
 import com.example.newsly.repository.NYService
@@ -15,13 +16,18 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
+
+    override fun setUpToolbar() {
+        toolbar.title = BuildConfig.APPLICATION_TITLE
+        toolbar.setTitleTextColor(Color.WHITE)
+        setSupportActionBar(toolbar)
+    }
+
+    override fun getLayout() = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        initToolBar()
 
         var builder = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -41,13 +47,6 @@ class MainActivity : AppCompatActivity() {
                 {
                         error -> Log.d("EIFLE", error.message)
                 })
-
-    }
-
-    private fun initToolBar() {
-        toolbar.title = BuildConfig.APPLICATION_TITLE
-        toolbar.setTitleTextColor(Color.WHITE)
-        setSupportActionBar(toolbar)
 
     }
 
