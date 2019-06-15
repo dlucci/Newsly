@@ -16,6 +16,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
+        debug {
+            buildConfigField("String", "APPLICATION_TITLE", "\"Newsly\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.nytimes.com\"")
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

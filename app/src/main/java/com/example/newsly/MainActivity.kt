@@ -1,8 +1,9 @@
 package com.example.newsly
 
-import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsly.adapter.TopStoriesAdapter
 import com.example.newsly.model.results
@@ -10,24 +11,19 @@ import com.example.newsly.repository.NYService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var client1 = OkHttpClient.Builder()
-        client1.addNetworkInterceptor {
-            var response = it.proceed(it.request())
-            response
-        }
+        initToolBar()
 
-        var builder = Retrofit.Builder().baseUrl("https://api.nytimes.com")
+        var builder = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
@@ -45,6 +41,13 @@ class MainActivity : Activity() {
                 {
                         error -> Log.d("EIFLE", error.message)
                 })
+
+    }
+
+    private fun initToolBar() {
+        toolbar.title = BuildConfig.APPLICATION_TITLE
+        toolbar.setTitleTextColor(Color.WHITE)
+        setSupportActionBar(toolbar)
 
     }
 
