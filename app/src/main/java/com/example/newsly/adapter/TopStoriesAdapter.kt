@@ -23,12 +23,13 @@ class TopStoriesAdapter(val data: results) : RecyclerView.Adapter<TopStoriesView
     }
 
     override fun onBindViewHolder(holder: TopStoriesViewHolder, position: Int) {
-        holder.item.headline.text = data.results[position].title
+        holder.item.headline.text = data.results[position].title + "<" + data.results[position].section + ">"
         holder.item.byline.text = data.results[position].byline
         holder.item.summary.text = data.results[position].abstract
         if (data.results[position].multimedia.isNotEmpty())
             Glide.with(holder.item.context)
                 .load(data.results[position].multimedia[0].url)
+                .placeholder(R.mipmap.ic_launcher)
                 .override(100, 140)
                 .into(holder.item.image)
 
