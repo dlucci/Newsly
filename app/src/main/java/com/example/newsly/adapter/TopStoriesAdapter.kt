@@ -23,7 +23,10 @@ class TopStoriesAdapter(val data: results) : RecyclerView.Adapter<TopStoriesView
     }
 
     override fun onBindViewHolder(holder: TopStoriesViewHolder, position: Int) {
-        holder.item.headline.text = data.results[position].title + "<" + data.results[position].section + ">"
+
+        val headerText = String.format("%s <%s>", data.results[position].title, data.results[position].section)
+
+        holder.item.headline.text = headerText
         holder.item.byline.text = data.results[position].byline
         holder.item.summary.text = data.results[position].abstract
         if (data.results[position].multimedia.isNotEmpty())
