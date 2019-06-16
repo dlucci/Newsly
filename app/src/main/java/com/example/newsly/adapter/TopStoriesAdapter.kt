@@ -29,6 +29,7 @@ class TopStoriesAdapter(val data: results) : RecyclerView.Adapter<TopStoriesView
         if (data.results[position].multimedia.isNotEmpty())
             Glide.with(holder.item.context)
                 .load(data.results[position].multimedia[0].url)
+                .placeholder(R.mipmap.ic_launcher)
                 .override(100, 140)
                 .into(holder.item.image)
 
