@@ -29,9 +29,9 @@ class TopStoriesAdapter(val data: results) : RecyclerView.Adapter<TopStoriesView
         holder.item.headline.text = headerText
         holder.item.byline.text = data.results[position].byline
         holder.item.summary.text = data.results[position].abstract
-        if (data.results[position].multimedia.isNotEmpty())
+        if (data.results[position].multimedia?.isNotEmpty() == true)
             Glide.with(holder.item.context)
-                .load(data.results[position].multimedia[0].url)
+                .load(data.results[position].multimedia?.getOrNull(0)?.url ?: "")
                 .placeholder(R.mipmap.ic_launcher)
                 .override(100, 140)
                 .into(holder.item.image)

@@ -6,7 +6,7 @@ data class TopStories( var section : String? = null,
                        var abstract : String? = null,
                        var url : String? = null,
                        var byline : String? = null,
-                       var multimedia : Array<Multimedia>)
+                       var multimedia : Array<Multimedia>?)
 
 data class Multimedia(var url : String? = null,
                       var height : Int,
