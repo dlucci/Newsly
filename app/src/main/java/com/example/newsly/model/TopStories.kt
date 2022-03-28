@@ -12,4 +12,4 @@ data class Multimedia(var url : String? = null,
                       var height : Int,
                       var width : Int)
 
-data class results( var results : Array<TopStories>)
+data class Results(var results : Array<TopStories>)

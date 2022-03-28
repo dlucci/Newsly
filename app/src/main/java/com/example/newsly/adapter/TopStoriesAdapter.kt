@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newsly.ui.ArticleActivity
 import com.example.newsly.R
-import com.example.newsly.model.results
+import com.example.newsly.model.Results
 import kotlinx.android.synthetic.main.recycler_row.view.*
 
-class TopStoriesAdapter(val data: results) : RecyclerView.Adapter<TopStoriesViewHolder>() {
+class TopStoriesAdapter(val data: Results) : RecyclerView.Adapter<TopStoriesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopStoriesViewHolder {
         var view= LayoutInflater.from(parent.context).inflate(R.layout.recycler_row, parent, false)

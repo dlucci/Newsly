@@ -1,11 +1,13 @@
 package com.example.newsly.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Recomposer
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.newsly.model.results
+import com.example.newsly.model.Results
 import com.example.newsly.repository.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +16,13 @@ class MainViewModel() : ViewModel() {
 
     val newsRepository = NewsRepository()
 
-    var newsObserver = MutableLiveData<results>()
+    private var newsObserver = MutableLiveData<Results>()
+
+    var resultList = MutableLiveData<Results>()
+//        get() = newsObserver
+//        set(value) {
+//            field.value = value.value
+//        }
 
     fun getStories() {
         newsRepository.getNewsStories()
@@ -25,7 +33,7 @@ class MainViewModel() : ViewModel() {
                     newsObserver.value = stories
                 },
                 {
-                    error -> Log.d("EIFLE", error.message)
+                    error -> Log.d("EIFLE", error?.message ?: "")
                 })
     }
 
