@@ -25,7 +25,7 @@ class MainViewModel() : ViewModel() {
                     newsObserver.value = stories
                 },
                 {
-                    error -> Log.d("EIFLE", error.message)
+                    error -> Log.d("EIFLE", error?.message ?: "")
                 })
     }
 

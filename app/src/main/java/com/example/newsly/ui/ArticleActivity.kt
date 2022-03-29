@@ -2,23 +2,32 @@ package com.example.newsly.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.example.newsly.BuildConfig
 import com.example.newsly.R
-import kotlinx.android.synthetic.main.activity_article.*
+import com.example.newsly.databinding.ActivityArticleBinding
 
 class ArticleActivity : BaseActivity() {
-    override fun setUpToolbar() {
-        toolbar.title = BuildConfig.APPLICATION_TITLE
-        toolbar.setTitleTextColor(Color.WHITE)
-        setSupportActionBar(toolbar)
-    }
 
-    override fun getLayout() = R.layout.activity_article
+    private lateinit var viewBinding: ActivityArticleBinding
+
+    fun setUpToolbar() {
+        viewBinding.toolbar.title = BuildConfig.APPLICATION_TITLE
+        viewBinding.toolbar.setTitleTextColor(Color.WHITE)
+        setSupportActionBar(viewBinding.toolbar)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewBinding = ActivityArticleBinding.inflate(layoutInflater)
+
+        setContentView(viewBinding.root)
+
+        setUpToolbar()
+
          if(intent.hasExtra("url"))
-             webview.loadUrl(intent.getStringExtra("url"))
+             viewBinding.webview.loadUrl(intent?.getStringExtra("url") ?: "")
     }
 
 }

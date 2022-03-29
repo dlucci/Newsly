@@ -4,40 +4,42 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsly.BuildConfig
-import com.example.newsly.R
 import com.example.newsly.adapter.TopStoriesAdapter
 import com.example.newsly.model.results
 import com.example.newsly.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-
+import com.example.newsly.databinding.ActivityMainBinding
 
 
 class MainActivity : BaseActivity() {
 
-    val model : MainViewModel by viewModels()
+    private val viewModel : MainViewModel by viewModels()
 
-    override fun setUpToolbar() {
-        toolbar.title = BuildConfig.APPLICATION_TITLE
-        toolbar.setTitleTextColor(Color.WHITE)
-        setSupportActionBar(toolbar)
+    lateinit var viewBinding: ActivityMainBinding
+
+    fun setUpToolbar() {
+        viewBinding.toolbar.title = BuildConfig.APPLICATION_TITLE
+        viewBinding.toolbar.setTitleTextColor(Color.WHITE)
+        setSupportActionBar(viewBinding.toolbar)
     }
-
-    override fun getLayout() = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        model.newsObserver.observe(this, Observer { initRecyclerView(it) })
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
+        setUpToolbar()
 
-        model.getStories()
+        viewModel.newsObserver.observe(this, Observer { initRecyclerView(it) })
+
+        viewModel.getStories()
     }
 
     private fun initRecyclerView(stories: results) {
-        recylver.layoutManager = LinearLayoutManager(this)
+        viewBinding.recylver.layoutManager = LinearLayoutManager(this)
         val adapter = TopStoriesAdapter(stories)
-        recylver.adapter = adapter
+        viewBinding.recylver.adapter = adapter
 
     }
 }
