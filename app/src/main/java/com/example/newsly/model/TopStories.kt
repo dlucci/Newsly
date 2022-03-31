@@ -1,15 +1,15 @@
 package com.example.newsly.model
 
 
-data class TopStories( var section : String? = null,
-                       var title : String? = null,
-                       var abstract : String? = null,
-                       var url : String? = null,
-                       var byline : String? = null,
-                       var multimedia : Array<Multimedia>?)
+data class TopStories( var section : String? = "",
+                       var title : String? = "",
+                       var abstract : String? = "",
+                       var url : String? = "",
+                       var byline : String? = "",
+                       var multimedia : Array<Multimedia>? = emptyArray())
 
-data class Multimedia(var url : String? = null,
-                      var height : Int,
-                      var width : Int)
+data class Multimedia(var url : String? = "",
+                      var height : Int = -1,
+                      var width : Int = -1)
 
-data class results( var results : Array<TopStories>)
+data class Results(var results : Array<TopStories> = emptyArray())
