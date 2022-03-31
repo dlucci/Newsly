@@ -1,28 +1,25 @@
 package com.example.newsly.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import com.example.newsly.BuildConfig
 import com.example.newsly.viewmodel.MainViewModel
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
 
 
@@ -46,7 +43,12 @@ class MainActivity : BaseActivity() {
             }
         }
         else {
-            Text(text = "Loading...")
+            Column(
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Loading...")
+            }
         }
     }
 
@@ -62,6 +64,8 @@ class MainActivity : BaseActivity() {
                               i.putExtra("url", story.url)
                               startActivity(i)
                     }
+                ).background(
+                    color = Color(0xFFFFFFFF)
                 )
             ) {
                 AsyncImage(
@@ -69,12 +73,37 @@ class MainActivity : BaseActivity() {
                     contentDescription = null,
                     modifier = Modifier.size(100.dp, 140.dp)
                 )
-                Text(
-                    text = story.title ?: "",
+                Column {
+                    Text(
+                        text = story.title ?: "",
+                        fontFamily = NYTFont,
+                        fontSize = 30.sp
                     )
+                    Text(
+                        text = story.byline ?: ""
+                    )
+                    Text(text = story.abstract ?: "")
+                }
             }
-
-
     }
+
+    @Preview
+    @Composable
+    fun previewRow() {
+
+        val multimedia = Multimedia(
+            url = "https://www.nytimes.com/live/2022/03/31/business/economy-news-opec-inflation"
+        )
+
+        val topStories = TopStories(
+            title = "Foo Bar:  A quest",
+            byline = "by Mike Adams",
+            abstract = "In a world filled with torment, one man stands alone by the foo bar",
+            multimedia = arrayOf(multimedia)
+            )
+        
+        articleRow(story = topStories)
+    }
+
 }
 
