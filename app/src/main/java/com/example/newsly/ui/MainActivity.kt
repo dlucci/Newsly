@@ -77,12 +77,20 @@ class MainActivity : BaseActivity() {
                     Text(
                         text = story.title ?: "",
                         fontFamily = NYTFont,
-                        fontSize = 30.sp
+                        fontSize = 20.sp
                     )
                     Text(
-                        text = story.byline ?: ""
+                        text = story.byline ?: "",
+                        fontFamily = NYTFont,
+                        color = Color.Gray,
+                        fontSize = 15.sp
+
                     )
-                    Text(text = story.abstract ?: "")
+                    Text(
+                        text = story.abstract ?: "",
+                        fontFamily = NYTFont,
+                        fontSize = 12.sp
+                    )
                 }
             }
     }
