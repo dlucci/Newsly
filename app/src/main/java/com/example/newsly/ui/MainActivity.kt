@@ -16,9 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
@@ -78,7 +76,8 @@ class MainActivity : BaseActivity() {
 
             AsyncImage(
                 model = multimedia?.url,
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
 
             )
 
@@ -87,24 +86,16 @@ class MainActivity : BaseActivity() {
                 fontFamily = NYTFont,
                 fontSize = 20.sp,
                 color = Color.White,
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier.align(Alignment.TopStart)
             )
 
-
-//                Column {
-//                    Text(
-//                        text = story.byline ?: "",
-//                        fontFamily = NYTFont,
-//                        color = Color.Gray,
-//                        fontSize = 15.sp
-//
-//                    )
-//                    Text(
-//                        text = story.abstract ?: "",
-//                        fontFamily = NYTFont,
-//                        fontSize = 12.sp
-//                    )
-//                }
+            Text(
+                text = story.byline ?: "",
+                fontFamily = NYTFont,
+                color = Color.White,
+                fontSize = 15.sp,
+                modifier = Modifier.align(Alignment.BottomEnd)
+            )
         }
     }
 
