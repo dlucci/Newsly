@@ -1,6 +1,7 @@
 package com.example.newsly.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.example.newsly.viewmodel.MainViewModel
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent { fetchStories() }
     }
 
@@ -62,9 +64,11 @@ class MainActivity : BaseActivity() {
             modifier = Modifier
                 .clickable(
                     onClick = {
-                        val i = Intent(this, ArticleActivity::class.java)
-                        i.putExtra("url", story.url)
-                        startActivity(i)
+                        val nytIntent = Uri.parse(story.url)
+                            .let {
+                                Intent(Intent.ACTION_VIEW, it)
+                            }
+                        startActivity(nytIntent)
                     }
                 )
                 .background(
