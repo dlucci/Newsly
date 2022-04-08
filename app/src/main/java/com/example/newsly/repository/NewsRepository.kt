@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class NewsRepository {
 
-    lateinit var nyService: NYService
+    var nyService: NYService
 
     init {
         var builder = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
