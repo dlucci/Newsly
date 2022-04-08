@@ -76,15 +76,11 @@ class MainActivity : BaseActivity() {
                 )
                 .fillMaxWidth()
         ) {
-
-
             AsyncImage(
                 model = multimedia?.url,
                 contentDescription = null,
                 modifier = Modifier.fillMaxWidth()
-
             )
-
             Text(
                 text = story.title ?: "",
                 fontFamily = NYTFont,
@@ -92,7 +88,6 @@ class MainActivity : BaseActivity() {
                 color = Color.White,
                 modifier = Modifier.align(Alignment.TopStart)
             )
-
             Text(
                 text = story.byline ?: "",
                 fontFamily = NYTFont,
