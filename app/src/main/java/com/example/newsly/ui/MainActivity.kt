@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.example.newsly.viewmodel.MainViewModel
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,25 +24,25 @@ import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent { fetchStories() }
+        setContent { FetchStories() }
     }
 
     @Composable
-    fun fetchStories() {
+    fun FetchStories() {
 
         if (viewModel.publicArticles.isNotEmpty()) {
 
             LazyColumn {
 
                 items(viewModel.publicArticles) {
-                    articleRow(story = it)
+                    ArticleRow(story = it)
                 }
             }
 
@@ -57,14 +58,15 @@ class MainActivity : BaseActivity() {
     }
 
     @Composable
-    fun articleRow(story: TopStories) {
+    fun ArticleRow(story: TopStories) {
 
         val multimedia = story.multimedia?.first()
         Box(
             modifier = Modifier
                 .clickable(
                     onClick = {
-                        val nytIntent = Uri.parse(story.url)
+                        val nytIntent = Uri
+                            .parse(story.url)
                             .let {
                                 Intent(Intent.ACTION_VIEW, it)
                             }
@@ -100,7 +102,7 @@ class MainActivity : BaseActivity() {
 
     @Preview
     @Composable
-    fun previewRow() {
+    fun PreviewRow() {
 
         val multimedia = Multimedia(
             url = "https://www.nytimes.com/live/2022/03/31/business/economy-news-opec-inflation"
@@ -109,11 +111,10 @@ class MainActivity : BaseActivity() {
         val topStories = TopStories(
             title = "Foo Bar:  A quest",
             byline = "by Mike Adams",
-            abstract = "In a world filled with torment, one man stands alone by the foo bar",
             multimedia = arrayOf(multimedia)
         )
 
-        articleRow(story = topStories)
+        ArticleRow(story = topStories)
     }
 
 }

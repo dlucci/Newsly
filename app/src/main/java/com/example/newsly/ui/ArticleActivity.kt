@@ -4,23 +4,24 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
 
-class ArticleActivity : BaseActivity() {
+class ArticleActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            loadWebView(intent.getStringExtra("url"))
+            LoadWebView(intent.getStringExtra("url"))
         }
     }
 
 
     @Composable
-    private fun loadWebView(url: String?) {
+    private fun LoadWebView(url: String?) {
 
         AndroidView(factory = {
             WebView(this).apply {
