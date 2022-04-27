@@ -6,7 +6,9 @@ import com.example.newsly.model.Converters
 import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
 
-@Database(entities = [TopStories::class, Multimedia::class], version = 1)
+@Database(entities = [TopStories::class, Multimedia::class],
+    version = 1,
+    exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class NewslyDatabase : RoomDatabase() {
 
@@ -20,6 +22,4 @@ abstract class NewslyDatabase : RoomDatabase() {
                         .build()
         }
     }
-
-
 }

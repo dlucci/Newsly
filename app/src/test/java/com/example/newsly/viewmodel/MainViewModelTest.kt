@@ -17,9 +17,9 @@ class MainViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    lateinit var viewModel : MainViewModel
+    private lateinit var viewModel : MainViewModel
 
-    lateinit var Results: Results
+    private lateinit var results: Results
 
     @Before
     fun setUp() {
@@ -31,9 +31,9 @@ class MainViewModelTest {
     }
 
     private fun createResults() {
-        var topStories = ArrayList<TopStories>()
-        topStories.add(TopStories(section = "foo", title = "bar", abstract = "buzz", url = "bizz", byline = "hoo", multimedia = null))
-        Results.results = topStories.toArray(TopStories::class.java)
+        val topStories = ArrayList<TopStories>()
+        topStories.add(TopStories(section = "foo", title = "bar", url = "bizz", byline = "hoo", multimedia = null))
+        results.results = topStories.toArray(TopStories::class.java)
     }
 
     @After
@@ -45,8 +45,6 @@ class MainViewModelTest {
 
         val emptyObserver = Observer<Results> {}
         //viewModel.newsObserver.observeForever(emptyObserver)
-
-        val
 
         assertTrue(viewModel != null)
     }
