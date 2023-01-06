@@ -99,6 +99,7 @@ dependencies {
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
 
-
     implementation 'androidx.room:room-ktx:2.4.2'
+
+    implementation 'androidx.palette:palette:1.0.0'
 }
