@@ -27,9 +27,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun getStories() {
         viewModelScope.launch {
-            val stories = newsRepository.getNewsStories()
-            saveInDb(stories)
-            queryDb()
+            newsRepository.getNewsStories.collect {
+                saveInDb(it)
+                queryDb()
+            }
+
         }
     }
 
@@ -42,13 +44,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private suspend fun queryDb() {
-        val stories = NewslyDatabase.getDatabase(getApplication())
+        NewslyDatabase.getDatabase(getApplication())
             .topStoriesDao()
-            .getStories()
+            .getStories().collect{
+                articleList.clear()
+                articleList.addAll(it)
 
-        articleList.clear()
-        articleList.addAll(stories)
-
+            }
     }
 
 }
