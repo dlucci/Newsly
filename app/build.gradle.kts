@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.newsly"
     compileSdk = 35
-    buildToolsVersion = "30.0.3"
+    buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "com.example.newsly"
