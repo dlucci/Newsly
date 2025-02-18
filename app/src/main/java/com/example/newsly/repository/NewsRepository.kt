@@ -1,6 +1,10 @@
 package com.example.newsly.repository
 
 import com.example.newsly.BuildConfig
+import com.example.newsly.model.Results
+import com.example.newsly.model.TopStories
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,5 +21,8 @@ class NewsRepository {
     }
 
 
-    suspend fun getNewsStories() = nyService.getArticles("W8bHOzqnSaeacXqa9xHnMkz93qKmb0sM")
+    val getNewsStories : Flow<Results>  = flow{
+        val latestStories = nyService.getArticles("W8bHOzqnSaeacXqa9xHnMkz93qKmb0sM")
+        emit(latestStories)
+    }
 }
