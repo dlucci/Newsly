@@ -1,17 +1,19 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.symbol.processing)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    compileSdk = 32
+    namespace = "com.example.newsly"
+    compileSdk = 35
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
         applicationId = "com.example.newsly"
         minSdk = 23
-        targetSdk = 32
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -61,45 +63,42 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation(libs.kotlin.stdlib.jdk7)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.lifecycle.extensions)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.test:core:1.4.0")
-    testImplementation("org.mockito:mockito-core:3.4.0")
-    testImplementation("android.arch.core:core-testing:1.1.1")
-
-    implementation("com.android.support:multidex:1.0.3")
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
     // Coil Image Processing
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation(libs.coil.compose)
 
     // Integration with activities
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation(libs.androidx.activity.compose)
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.1.1")
+    implementation(libs.androidx.compose.material)
     // Animations
-    implementation("androidx.compose.animation:animation:1.1.1")
+    implementation(libs.androidx.compose.animation)
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.1.1")
+    implementation(libs.androidx.compose.ui.tooling)
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    implementation("androidx.room:room-runtime:2.4.2")
-    ksp("androidx.room:room-compiler:2.4.2")
+    //Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 
-    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    //Paging
+    implementation(libs.androidx.paging.runtime)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+    //Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
+    implementation(libs.androidx.navigation.fragment.ktx)
 }
