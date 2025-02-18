@@ -92,7 +92,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 
     implementation("androidx.room:room-runtime:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
+    ksp("androidx.room:room-compiler:2.4.2")
 
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
