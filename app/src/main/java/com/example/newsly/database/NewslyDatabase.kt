@@ -17,7 +17,7 @@ abstract class NewslyDatabase : RoomDatabase() {
     companion object {
 
         fun getDatabase(context: Context) : NewslyDatabase{
-                 return Room.databaseBuilder(context,
+                 return Room.databaseBuilder(context.applicationContext,
                         NewslyDatabase::class.java, "newsly-database")
                         .build()
         }

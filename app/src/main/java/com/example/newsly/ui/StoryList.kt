@@ -1,7 +1,5 @@
 package com.example.newsly.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,29 +23,49 @@ import coil.compose.AsyncImage
 import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
 import com.example.newsly.viewmodel.MainViewModel
+import com.example.newsly.viewmodel.NewsState
 
 @Composable
 fun StoryList() {
     val viewModel : MainViewModel = viewModel()
 
-    val articles = remember { viewModel.publicArticles }
+    val uiState by viewModel.uiState.collectAsState()
 
-    if (articles.isNotEmpty()) {
-
-        LazyColumn {
-
-            items(viewModel.publicArticles) {
-                ArticleRow(story = it)
-            }
+    when(uiState) {
+        is NewsState.RemoteSuccess -> {
+            val successState = uiState as NewsState.RemoteSuccess
+            ArticleList(stories = successState.topStories)
         }
+        is NewsState.LocalSuccess -> {
+            val successState = uiState as NewsState.LocalSuccess
+            ArticleList(stories = successState.topStories)
+        }
+        is NewsState.Error -> {}
+        is NewsState.Loading -> {
+            val loadingState = uiState as NewsState.Loading
+            Loading(loadingState.isLoading)
+        }
+    }
+}
 
-    } else {
+@Composable
+fun Loading(isLoading : Boolean) {
+    if(isLoading) {
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Loading...")
+        }
+    }
+}
+
+@Composable
+fun ArticleList(stories : Array<TopStories>) {
+    LazyColumn {
+        items(stories) {
+            ArticleRow(story = it)
         }
     }
 }
