@@ -44,21 +44,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             dbFlow.flatMapConcat { dbData ->
                 flow {
                     val safeDbData = dbData ?: emptyArray() // Ensure it's never null
-                    emit(safeDbData)
-                    updateState(NewsState.LocalSuccess(safeDbData))
+                    emit(NewsState.Loading(false))
+                    emit(NewsState.LocalSuccess(safeDbData))
 
                     val networkData = networkFlow.first()
                     saveInDb(networkData)
-                    emit(networkData.results)
-                    updateState(NewsState.RemoteSuccess(networkData.results))
+                    emit(NewsState.RemoteSuccess(networkData.results))
                 }
             }.collect {
-                updateState(NewsState.Loading(false))
+                updateState(it)
             }
         }
     }
 
-    fun updateState(newState: NewsState) {
+    private fun updateState(newState: NewsState) {
         _uiState.value = newState
     }
 
