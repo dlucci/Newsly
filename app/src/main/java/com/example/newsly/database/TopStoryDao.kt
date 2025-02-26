@@ -15,4 +15,7 @@ interface TopStoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStory(story : TopStories)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStories(stories : Array<TopStories>)
 }

@@ -40,7 +40,10 @@ fun StoryList() {
             val successState = uiState as NewsState.LocalSuccess
             ArticleList(stories = successState.topStories)
         }
-        is NewsState.Error -> {}
+        is NewsState.Error -> {
+            val errorState = uiState as NewsState.Error
+            Error(errorState.message)
+        }
         is NewsState.Loading -> {
             val loadingState = uiState as NewsState.Loading
             Loading(loadingState.isLoading)
@@ -58,6 +61,17 @@ fun Loading(isLoading : Boolean) {
         ) {
             Text(text = "Loading...")
         }
+    }
+}
+
+@Composable
+fun Error(message : String) {
+    Column(
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = message)
     }
 }
 

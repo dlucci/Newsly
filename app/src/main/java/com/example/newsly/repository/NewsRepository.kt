@@ -20,9 +20,16 @@ class NewsRepository {
         nyService = builder.create(NYService::class.java)
     }
 
+//"W8bHOzqnSaeacXqa9xHnMkz93qKmb0sM"
+    val getNewsStories : Flow<Result<Results>>  = flow {
+        val latestStories = nyService.getArticles("W8bHOzqnSaeacXqa9xHnMkz93qKmb0s")
+        if(latestStories.isSuccessful) {
+            latestStories.body()?.let {
+                emit(Result.success(it))
+            }
+        } else {
+            emit(Result.failure(Throwable("${latestStories.code()}: ${latestStories.message()}")))
 
-    val getNewsStories : Flow<Results>  = flow{
-        val latestStories = nyService.getArticles("W8bHOzqnSaeacXqa9xHnMkz93qKmb0sM")
-        emit(latestStories)
+        }
     }
 }

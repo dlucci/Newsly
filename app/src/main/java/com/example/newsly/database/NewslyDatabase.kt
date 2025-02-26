@@ -16,10 +16,19 @@ abstract class NewslyDatabase : RoomDatabase() {
 
     companion object {
 
+        @Volatile
+        private var INSTANCE : NewslyDatabase? = null
+
         fun getDatabase(context: Context) : NewslyDatabase{
-                 return Room.databaseBuilder(context.applicationContext,
-                        NewslyDatabase::class.java, "newsly-database")
-                        .build()
+                 return INSTANCE ?: synchronized(this) {
+                     val instance = Room.databaseBuilder(
+                         context.applicationContext,
+                         NewslyDatabase::class.java, "newsly-database"
+                     )
+                         .build()
+                     INSTANCE = instance
+                     instance
+                 }
         }
     }
 }
