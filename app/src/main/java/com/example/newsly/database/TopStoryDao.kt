@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TopStoryDao {
 
-    @Query("SELECT * from TopStories ORDER BY TopStories.id")
+    @Query("SELECT * from TopStories ORDER BY TopStories.updatedDate ASC")
     fun getStories() : Flow<List<TopStories>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

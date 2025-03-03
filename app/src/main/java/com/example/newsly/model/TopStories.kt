@@ -2,6 +2,7 @@ package com.example.newsly.model
 
 import androidx.room.*
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
@@ -10,12 +11,12 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 @OptIn(ExperimentalSerializationApi::class)
 @Serializable
 @JsonIgnoreUnknownKeys
-data class TopStories(@PrimaryKey(autoGenerate = true) var id : Long = 0,
-                      var section : String? = "",
-                      var title : String? = "",
+data class TopStories(var section : String? = "",
+                      @PrimaryKey var title : String = "",
                       var url : String = "",
                       var byline : String? = "",
-                      var multimedia : List<Multimedia>? = null)
+                      var multimedia : List<Multimedia>? = null,
+                      @SerialName("updated_date") var updatedDate : String? = "")
 
 @Entity
 @OptIn(ExperimentalSerializationApi::class)
