@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 interface TopStoryDao {
 
     @Query("SELECT * from TopStories ORDER BY TopStories.id")
-    fun getStories() : Flow<Array<TopStories>>
+    fun getStories() : Flow<List<TopStories>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStory(story : TopStories)
+    suspend fun insertStories(stories : List<TopStories>)
 }
