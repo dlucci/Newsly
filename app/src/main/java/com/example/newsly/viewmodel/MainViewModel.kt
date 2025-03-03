@@ -1,6 +1,7 @@
 package com.example.newsly.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.newsly.database.NewslyDatabase
 import com.example.newsly.model.Results
@@ -18,9 +19,9 @@ import kotlinx.coroutines.launch
 
 
 sealed class NewsState {
-    data class RemoteSuccess(val topStories: Array<TopStories>) : NewsState()
-    data class LocalSuccess(val topStories: Array<TopStories>) : NewsState()
-    data class Error(val message: String) : NewsState()
+    data class RemoteSuccess(val topStories: List<TopStories>) : NewsState()
+    data class LocalSuccess(val topStories: List<TopStories>) : NewsState()
+    data class Error(val message: String, val topStories: List<TopStories>) : NewsState()
     data class Loading(val isLoading: Boolean) : NewsState()
 }
 
@@ -31,11 +32,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading(false))
     val uiState: StateFlow<NewsState> = _uiState
 
+    private suspend fun saveInDb(results: Results) {
+        val dao = NewslyDatabase.getDatabase(getApplication()).topStoriesDao()
+        dao.insertStories(results.results)
+    }
+
+    private val queryDb: Flow<List<TopStories>> =
+        NewslyDatabase.getDatabase(getApplication())
+            .topStoriesDao()
+            .getStories()
+
+
     init {
         updateState(NewsState.Loading(true))
         viewModelScope.launch {
             val networkFlow = newsRepository.getNewsStories
-            val dbFlow = queryDb ?: flowOf(emptyArray())
+            val dbFlow = queryDb
             dbFlow.flatMapConcat { dbData ->
                 flow {
                     emit(NewsState.Loading(false))
@@ -50,16 +62,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             }
                         } else {
                             val exception = data.exceptionOrNull()
-                            emit(NewsState.Error(exception?.message ?: "Unknown error"))
+
                             queryDb.collect {
+                                Log.d("EIFLE", "emitting local data ${it.size}")
                                 emit(NewsState.LocalSuccess(it))
+                               emit(NewsState.Error(exception?.message ?: "Unknown error", it))
                             }
                         }
                     }
 
                 }
             }.catch {
-                emit(NewsState.Error(it.message ?: "Unknown error"))
+                emit(NewsState.Error(it.message ?: "Unknown error", emptyList()))
             }.collect {
                 updateState(it)
             }
@@ -69,17 +83,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun updateState(newState: NewsState) {
         _uiState.value = newState
     }
-
-
-    private suspend fun saveInDb(results: Results) {
-        val dao = NewslyDatabase.getDatabase(getApplication()).topStoriesDao()
-        dao.insertStories(results.results)
-    }
-
-    private val queryDb: Flow<Array<TopStories>> =
-        NewslyDatabase.getDatabase(getApplication())
-            .topStoriesDao()
-            .getStories()
-
-
 }
