@@ -2,11 +2,12 @@ package com.example.newsly.repository
 
 import com.example.newsly.BuildConfig
 import com.example.newsly.model.Results
-import com.example.newsly.model.TopStories
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 class NewsRepository {
 
@@ -14,7 +15,7 @@ class NewsRepository {
 
     init {
         val builder = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
             .build()
 
         nyService = builder.create(NYService::class.java)

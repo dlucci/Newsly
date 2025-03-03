@@ -1,10 +1,15 @@
 package com.example.newsly.model
 
 import androidx.room.*
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
 @Entity
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+@JsonIgnoreUnknownKeys
 data class TopStories(@PrimaryKey(autoGenerate = true) var id : Long = 0,
                       var section : String? = "",
                       var title : String? = "",
@@ -13,23 +18,28 @@ data class TopStories(@PrimaryKey(autoGenerate = true) var id : Long = 0,
                       var multimedia : List<Multimedia>? = null)
 
 @Entity
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+@JsonIgnoreUnknownKeys
 data class Multimedia(@PrimaryKey var url : String = "",
                       var height : Int = -1,
                       var width : Int = -1)
 
 
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+@JsonIgnoreUnknownKeys
 data class Results(var results : List<TopStories> = emptyList())
 
 class Converters {
 
         @TypeConverter
         fun fromMultimedia(multimedia: List<Multimedia>?) : String{
-            return Gson().toJson(multimedia)
+            return Json.encodeToString(multimedia)
         }
 
         @TypeConverter
         fun fromArray(str : String) : List<Multimedia>? {
-            val listType = object : TypeToken<List<Multimedia>?>() {}.type
-            return Gson().fromJson(str, listType)
+            return Json.decodeFromString(str)
         }
 }
