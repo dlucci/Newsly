@@ -1,5 +1,6 @@
 package com.example.newsly.ui
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
@@ -37,6 +39,7 @@ import com.example.newsly.viewmodel.NewsState
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StoryList() {
     val viewModel: MainViewModel = viewModel()
@@ -56,37 +59,41 @@ fun StoryList() {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        content = {
+            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+                when (uiState) {
+                    is NewsState.RemoteSuccess -> {
+                        val successState = uiState as NewsState.RemoteSuccess
+                        ArticleList(stories = successState.topStories)
+                    }
 
-        when (uiState) {
-            is NewsState.RemoteSuccess -> {
-                val successState = uiState as NewsState.RemoteSuccess
-                ArticleList(stories = successState.topStories)
-            }
+                    is NewsState.LocalSuccess -> {
+                        val successState = uiState as NewsState.LocalSuccess
+                        ArticleList(stories = successState.topStories)
+                    }
 
-            is NewsState.LocalSuccess -> {
-                val successState = uiState as NewsState.LocalSuccess
-                ArticleList(stories = successState.topStories)
-            }
+                    is NewsState.Loading -> {
+                        val loadingState = uiState as NewsState.Loading
+                        Loading(loadingState.isLoading)
+                    }
 
-            is NewsState.Loading -> {
-                val loadingState = uiState as NewsState.Loading
-                Loading(loadingState.isLoading)
-            }
+                    is NewsState.Error -> {
+                        val errorState = uiState as NewsState.Error
+                        ArticleList(stories = errorState.topStories)
+                    }
+                }
 
-            is NewsState.Error -> {
-                val errorState = uiState as NewsState.Error
-                ArticleList(stories = errorState.topStories)
+                SnackbarHost(
+                    hostState = snackbarHostState,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.BottomCenter))
+
             }
         }
+    )
 
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.BottomCenter))
-
-    }
 }
 
 @Composable
