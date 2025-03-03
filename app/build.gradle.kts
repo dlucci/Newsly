@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.symbol.processing)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -72,7 +73,6 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
 
     // Coil Image Processing
     implementation(libs.coil.compose)
@@ -101,4 +101,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.androidx.navigation.fragment.ktx)
+
+    //JSON Serialization
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.converter)
 }

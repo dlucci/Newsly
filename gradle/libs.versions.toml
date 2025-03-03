@@ -15,6 +15,8 @@ room = "2.6.1"
 androidx-paging = "3.3.6"
 kotlinx-coroutines = "1.7.3"
 androidx-navigation = "2.8.7"
+kotlinx-serialization-plugin = "2.1.0"
+kotlinx-serialization-library = "1.8.0"
 
 [libraries]
 kotlin-stdlib-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin-stdlib-jdk7" }
@@ -25,7 +27,6 @@ androidx-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycl
 
 # Retrofit
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
 # Coil
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
@@ -49,6 +50,10 @@ androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime-kt
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
+# JSON Parsing
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-library" }
+kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit"}
+
 # Navigation
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "androidx-navigation" }
 
@@ -57,3 +62,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-symbol-processing = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin"}
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }

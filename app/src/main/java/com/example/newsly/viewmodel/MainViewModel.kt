@@ -64,9 +64,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             val exception = data.exceptionOrNull()
 
                             queryDb.collect {
-                                Log.d("EIFLE", "emitting local data ${it.size}")
                                 emit(NewsState.LocalSuccess(it))
-                               emit(NewsState.Error(exception?.message ?: "Unknown error", it))
+                                emit(NewsState.Error(exception?.message ?: "Unknown error", it))
                             }
                         }
                     }
