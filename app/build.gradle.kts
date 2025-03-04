@@ -105,4 +105,10 @@ dependencies {
     //JSON Serialization
     implementation(libs.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.converter)
+
+    //Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.core)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.navigation)
 }

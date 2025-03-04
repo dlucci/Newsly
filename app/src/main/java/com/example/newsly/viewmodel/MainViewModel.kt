@@ -1,7 +1,8 @@
 package com.example.newsly.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.newsly.database.NewslyDatabase
 import com.example.newsly.model.Results
 import com.example.newsly.model.TopStories
@@ -25,19 +26,22 @@ sealed class NewsState {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private var newsRepository: NewsRepository = NewsRepository()
+class MainViewModel(
+    application: Application,
+    private val newsRepository: NewsRepository,
+    private val database: NewslyDatabase
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading(false))
     val uiState: StateFlow<NewsState> = _uiState
 
     private suspend fun saveInDb(results: Results) {
-        val dao = NewslyDatabase.getDatabase(getApplication()).topStoriesDao()
+        val dao = database.topStoriesDao()
         dao.insertStories(results.results)
     }
 
     private val queryDb: Flow<List<TopStories>> =
-        NewslyDatabase.getDatabase(getApplication())
+        database
             .topStoriesDao()
             .getStories()
             .distinctUntilChanged()
@@ -62,9 +66,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             }
                         } else {
                             val exception = data.exceptionOrNull()
-
                             emit(NewsState.Error(exception?.message ?: "Unknown error", dbData))
-
                         }
                     }
                 }
