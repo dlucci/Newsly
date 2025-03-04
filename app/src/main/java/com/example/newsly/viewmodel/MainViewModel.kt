@@ -1,7 +1,6 @@
 package com.example.newsly.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.newsly.database.NewslyDatabase
 import com.example.newsly.model.Results
@@ -12,9 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 
@@ -41,6 +40,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         NewslyDatabase.getDatabase(getApplication())
             .topStoriesDao()
             .getStories()
+            .distinctUntilChanged()
 
 
     init {
@@ -48,11 +48,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val networkFlow = newsRepository.getNewsStories
             val dbFlow = queryDb
+
             dbFlow.flatMapConcat { dbData ->
                 flow {
                     emit(NewsState.Loading(false))
                     emit(NewsState.LocalSuccess(dbData))
-
                     networkFlow.collect { data ->
                         if (data.isSuccess) {
                             val results = data.getOrNull()
@@ -63,13 +63,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         } else {
                             val exception = data.exceptionOrNull()
 
-                            queryDb.collect {
-                                emit(NewsState.LocalSuccess(it))
-                                emit(NewsState.Error(exception?.message ?: "Unknown error", it))
-                            }
+                            emit(NewsState.Error(exception?.message ?: "Unknown error", dbData))
+
                         }
                     }
-
                 }
             }.catch {
                 emit(NewsState.Error(it.message ?: "Unknown error", emptyList()))
