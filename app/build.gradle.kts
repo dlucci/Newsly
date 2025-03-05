@@ -77,16 +77,13 @@ dependencies {
     // Coil Image Processing
     implementation(libs.coil.compose)
 
-    // Integration with activities
+    //Compose
     implementation(libs.androidx.activity.compose)
-    // Compose Material Design
     implementation(libs.androidx.compose.material)
-    // Animations
     implementation(libs.androidx.compose.animation)
-    // Tooling support (Previews, etc.)
     implementation(libs.androidx.compose.ui.tooling)
-    // Integration with ViewModels
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
 
     //Room
     implementation(libs.room.runtime)
