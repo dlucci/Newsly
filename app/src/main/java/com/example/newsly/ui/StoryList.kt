@@ -1,6 +1,7 @@
 package com.example.newsly.ui
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
@@ -39,7 +42,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun StoryList() {
+fun StoryList(navController: NavController) {
     val viewModel: MainViewModel = koinViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
@@ -63,12 +66,12 @@ fun StoryList() {
                 when (uiState) {
                     is NewsState.RemoteSuccess -> {
                         val successState = uiState as NewsState.RemoteSuccess
-                        ArticleList(stories = successState.topStories)
+                        ArticleList(stories = successState.topStories, navController = navController)
                     }
 
                     is NewsState.LocalSuccess -> {
                         val successState = uiState as NewsState.LocalSuccess
-                        ArticleList(stories = successState.topStories)
+                        ArticleList(stories = successState.topStories, navController = navController)
                     }
 
                     is NewsState.Loading -> {
@@ -78,7 +81,7 @@ fun StoryList() {
 
                     is NewsState.Error -> {
                         val errorState = uiState as NewsState.Error
-                        ArticleList(stories = errorState.topStories)
+                        ArticleList(stories = errorState.topStories, navController = navController)
                     }
                 }
 
@@ -108,22 +111,24 @@ fun Loading(isLoading: Boolean) {
 }
 
 @Composable
-fun ArticleList(stories: List<TopStories>) {
+fun ArticleList(stories: List<TopStories>, navController: NavController) {
     LazyColumn {
         items(stories) {
-            ArticleRow(story = it)
+            ArticleRow(story = it, navController = navController)
         }
     }
 }
 
 @Composable
-fun ArticleRow(story: TopStories) {
+fun ArticleRow(story: TopStories, navController: NavController) {
 
     val multimedia = story.multimedia?.first()
     Box(
         modifier = Modifier
             .clickable(
                 onClick = {
+                    navController.navigate(Routes.Article.route + "/${Uri.encode(story.url)}")
+
 //                    val nytIntent = Uri
 //                        .parse(story.url)
 //                        .let {
@@ -161,7 +166,7 @@ fun ArticleRow(story: TopStories) {
 
 @Preview
 @Composable
-fun PreviewRow() {
+fun PreviewRow(navController: NavController = rememberNavController()) {
 
     val multimedia = Multimedia(
         url = "https://www.nytimes.com/live/2022/03/31/business/economy-news-opec-inflation"
@@ -173,5 +178,5 @@ fun PreviewRow() {
         multimedia = listOf(multimedia)
     )
 
-    ArticleRow(story = topStories)
+    ArticleRow(story = topStories, navController = navController)
 }
