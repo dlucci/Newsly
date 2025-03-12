@@ -7,8 +7,9 @@ import com.example.newsly.model.Multimedia
 import com.example.newsly.model.TopStories
 
 @Database(entities = [TopStories::class, Multimedia::class],
-    version = 1,
-    exportSchema = true)
+    version = 3,
+    exportSchema = true,
+    autoMigrations = [AutoMigration(from = 1, to = 2), AutoMigration(from = 2, to = 3)])
 @TypeConverters(Converters::class)
 abstract class NewslyDatabase : RoomDatabase() {
 

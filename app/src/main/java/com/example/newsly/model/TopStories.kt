@@ -7,6 +7,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
+enum class PhotoFormat {
+    @SerialName("Super Jumbo") SUPER_JUMBO,
+    @SerialName("threeByTwoSmallAt2X") THREE_BY_TWO_SMALL_AT_2X,
+    @SerialName("Large Thumbnail") LARGE_THUMBNAIL,
+}
+
 @Entity
 @OptIn(ExperimentalSerializationApi::class)
 @Serializable
@@ -16,7 +22,8 @@ data class TopStories(var section : String? = "",
                       var url : String = "",
                       var byline : String? = "",
                       var multimedia : List<Multimedia>? = null,
-                      @SerialName("updated_date") var updatedDate : String? = "")
+                      @SerialName("updated_date") var updatedDate : String? = "",
+                      val abstract : String? = "")
 
 @Entity
 @OptIn(ExperimentalSerializationApi::class)
@@ -24,7 +31,8 @@ data class TopStories(var section : String? = "",
 @JsonIgnoreUnknownKeys
 data class Multimedia(@PrimaryKey var url : String = "",
                       var height : Int = -1,
-                      var width : Int = -1)
+                      var width : Int = -1,
+                      val format : PhotoFormat? = null)
 
 
 @OptIn(ExperimentalSerializationApi::class)
