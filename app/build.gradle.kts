@@ -4,12 +4,41 @@ plugins {
     alias(libs.plugins.kotlin.symbol.processing)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinx.serialization)
+    jacoco
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest") // Ensure tests run first
+
+    reports {
+        html.required.set(true)
+    }
+
+    val fileFilter = listOf(
+        "**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*",
+        "**/*Test*.*", "**/android/**/*.*"
+    )
+
+    val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
+        exclude(fileFilter)
+    }
+    val kotlinDebugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    sourceDirectories.setFrom(files("${project.projectDir}/src/main/java"))
+    classDirectories.setFrom(files(debugTree, kotlinDebugTree))
+    executionData.setFrom(fileTree(buildDir).include("jacoco/testDebugUnitTest.exec"))
 }
 
 android {
     namespace = "com.example.newsly"
     compileSdk = 35
     buildToolsVersion = "35.0.0"
+
+    testCoverage {
+        jacocoVersion = "0.8.10"
+    }
 
     defaultConfig {
         applicationId = "com.example.newsly"
@@ -60,6 +89,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
 }
 
 dependencies {
@@ -108,4 +138,7 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.navigation)
+
+    //Testing
+    implementation(libs.junit)
 }
