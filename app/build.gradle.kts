@@ -115,6 +115,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
 
+    //UI
+    implementation(libs.androidx.material3.android)
+
     //Room
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
@@ -141,4 +144,8 @@ dependencies {
 
     //Testing
     implementation(libs.junit)
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
