@@ -143,7 +143,11 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
 
     //Testing
-    implementation(libs.junit)
+    testImplementation(libs.junit)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 ksp {
