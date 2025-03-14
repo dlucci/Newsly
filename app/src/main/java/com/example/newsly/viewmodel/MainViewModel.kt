@@ -1,7 +1,9 @@
 package com.example.newsly.viewmodel
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsly.database.NewslyDatabase
 import com.example.newsly.model.Results
@@ -27,24 +29,19 @@ sealed class NewsState {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel(
-    application: Application,
     private val newsRepository: NewsRepository,
-    private val database: NewslyDatabase
-) : AndroidViewModel(application) {
+    private val database: NewslyDatabase,
+    val queryDb: Flow<List<TopStories>> = database.topStoriesDao().getStories().distinctUntilChanged()
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading(false))
     val uiState: StateFlow<NewsState> = _uiState
 
-    private suspend fun saveInDb(results: Results) {
+    @VisibleForTesting
+    suspend fun saveInDb(results: Results) {
         val dao = database.topStoriesDao()
         dao.insertStories(results.results)
     }
-
-    private val queryDb: Flow<List<TopStories>> =
-        database
-            .topStoriesDao()
-            .getStories()
-            .distinctUntilChanged()
 
 
     init {
@@ -78,7 +75,8 @@ class MainViewModel(
         }
     }
 
-    private fun updateState(newState: NewsState) {
+    @VisibleForTesting
+    fun updateState(newState: NewsState) {
         _uiState.value = newState
     }
 }

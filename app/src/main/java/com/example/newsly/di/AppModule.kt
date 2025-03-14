@@ -7,7 +7,6 @@ import com.example.newsly.repository.NewsRepository
 import com.example.newsly.viewmodel.MainViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -24,5 +23,5 @@ val appModule = module {
     }
     single { get<Retrofit>().create(NYService::class.java) }
 
-    viewModel { MainViewModel(androidApplication(), get(), get()) }
+    viewModel { MainViewModel(get(), get()) }
 }
